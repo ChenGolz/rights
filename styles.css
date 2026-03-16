@@ -94,3 +94,7 @@ body.dark .save-contact-btn{background:#24364f;color:var(--text)}
 .compact-section{padding:18px}
 .quick-target.hidden-by-filter{display:none !important}
 .resource-card{transition:opacity .2s ease, transform .2s ease}
+
+.header-menu{position:relative}
+.header-dropdown{display:none;position:absolute;background:#fff;border:1px solid #ddd;padding:10px;border-radius:6px}
+.header-menu:hover .header-dropdown{display:block}

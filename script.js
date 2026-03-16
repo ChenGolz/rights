@@ -636,3 +636,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// PWA service worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js');
+  });
+}
+
+// improved geolocation button feedback
+document.addEventListener("DOMContentLoaded",()=>{
+  const geoBtn = document.getElementById("locateMeBtn");
+  if(!geoBtn) return;
+
+  geoBtn.addEventListener("click",()=>{
+    geoBtn.textContent = "מאתר מיקום... ⏳";
+    geoBtn.disabled = true;
+
+    navigator.geolocation.getCurrentPosition((pos)=>{
+      geoBtn.textContent = "המיקום שלי";
+      geoBtn.disabled = false;
+    },()=>{
+      geoBtn.textContent = "שגיאה באיתור מיקום";
+      geoBtn.disabled = false;
+    });
+  });
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+ const btn=document.getElementById("shareSiteBtn");
+ if(!btn) return;
+ btn.onclick=()=>{
+   const url=window.location.href;
+   const text=encodeURIComponent("מצאתי אתר שעוזר למשפחות שכולות להתמודד עם הבירוקרטיה: "+url);
+   window.open("https://wa.me/?text="+text,"_blank");
+ };
+});
