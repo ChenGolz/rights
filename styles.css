@@ -1,0 +1,96 @@
+
+:root{
+  --bg:#eef6f8; --card:#f9fcfd; --primary:#496f8c; --text:#20303c; --border:#cfe0e7;
+  --radius:16px; --shadow:0 3px 10px rgba(0,0,0,0.08); --base-size:18px;
+}
+body{font-family:system-ui;background:var(--bg);color:var(--text);margin:0;font-size:var(--base-size);line-height:1.6}
+body.dark{--bg:#0f1722;--card:#162233;--text:#edf3ff;--border:#2a3d53}
+.container{max-width:1100px;margin:auto;padding:20px}
+header{background:linear-gradient(180deg,#496f8c,#335069);color:white}
+.topbar{display:flex;justify-content:flex-end}
+.lang-wrap{display:flex;gap:8px;align-items:center}
+.hero-actions,.actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:none;padding:12px 18px;border-radius:999px;cursor:pointer;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn-primary{background:white;color:#335069;font-weight:700}
+.btn-secondary{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.24)}
+nav{background:rgba(238,246,248,.92);position:sticky;top:0;backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:10}
+body.dark nav{background:rgba(15,23,34,.9)}
+.nav-wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.nav-wrap a{color:var(--primary);font-weight:700}
+.section,.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:28px 0}
+.muted,.note{opacity:.8}
+.grid.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+label{display:flex;flex-direction:column;gap:8px;font-weight:700}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit;box-sizing:border-box}
+.letter-output{min-height:240px;margin-top:14px}
+.timeline{display:grid;gap:10px;margin-top:14px}
+.timeline-item{background:#edf5f8;padding:14px;border-radius:12px}
+body.dark .timeline-item{background:#213347}
+.map-box{height:360px;border-radius:14px;overflow:hidden}
+.breathe-wrap{display:flex;justify-content:center;align-items:center;min-height:180px}
+.breathe-circle{width:90px;height:90px;border-radius:50%;background:#dcebf2;transition:all 3.8s ease}
+.breathe-circle.inhale{transform:scale(1.55);background:#9cc6ff}
+.breathe-circle.hold{transform:scale(1.55);background:#cdb6ff}
+.breathe-circle.exhale{transform:scale(0.9);background:#9ed4b5}
+.breathe-status{text-align:center;font-weight:700}
+.floating-breathe,.sos-btn,.breathe-btn{position:fixed;bottom:18px;color:white;text-decoration:none;padding:14px 18px;border-radius:999px;box-shadow:0 8px 18px rgba(0,0,0,.2);z-index:50;font-weight:700}
+.floating-breathe{right:18px;background:#4d8a6b}
+.sos-btn{left:18px;background:#d84f5f}
+.breathe-btn{display:none}
+.candle-wrap{display:flex;justify-content:center;align-items:center;min-height:140px}
+.candle{width:40px;height:90px;background:#cfcfcf;border-radius:8px;position:relative;transition:all .3s ease}
+.candle::before{content:"";position:absolute;top:-22px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:transparent}
+.candle.lit{background:#f4e3b2}
+.candle.lit::before{background:radial-gradient(circle,#ffd35c 0%, #ff9f1a 60%, transparent 70%);box-shadow:0 0 24px rgba(255,180,50,.7)}
+.guide-list{margin:0;padding-right:20px}
+.guide-list li{margin-bottom:10px}
+.kids-grid,.phone-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.mini-card,.phone-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.phone-card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--text);text-align:center}
+.phone-card span{font-size:1.4rem;font-weight:800;color:var(--primary)}
+@media print{
+  nav,.hero-actions,.floating-breathe,.sos-btn{display:none !important}
+  body{background:white;color:black}
+  .section{box-shadow:none;border:1px solid #ccc}
+}
+
+.note a{color:var(--primary)}
+
+.print-letter-block{display:none;white-space:pre-wrap}
+.map-filters .btn{color:var(--text);background:var(--card);border:1px solid var(--border)}
+body.dark .map-filters .btn{color:var(--text)}
+@media print{
+  #letters .grid, #letters .actions-row, #letters .note, #letters h2, #letters p, #letters label, #letters input, #letters select, #letters textarea, nav,.hero-actions,.floating-breathe,.sos-btn{display:none !important}
+  #printLetterBlock{display:block !important;border:1px solid #ccc;padding:24px;font-family:Arial;line-height:1.8}
+}
+
+.field-error{color:#c62828;font-size:.85rem;min-height:1.1em}
+.breathe-circle{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.breathe-inner-text{font-weight:700;color:#20303c}
+body.dark .breathe-inner-text{color:#edf3ff}
+.candle.lit::before{animation:flicker 0.11s infinite alternate}
+@keyframes flicker{
+  0%{transform:translateX(-50%) scale(1);opacity:.9}
+  50%{transform:translateX(-50%) scale(1.05);opacity:1}
+  100%{transform:translateX(-50%) scale(.95);opacity:.8}
+}
+.phone-card{gap:10px}
+.phone-card > a{text-decoration:none;color:var(--text);display:flex;flex-direction:column;gap:6px}
+.save-contact-btn{border:none;background:#dcebf2;color:var(--text);padding:10px 12px;border-radius:999px;cursor:pointer}
+body.dark .save-contact-btn{background:#24364f;color:var(--text)}
+.section{animation:fadeIn .28s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.map-address-grid .mini-card small{opacity:.75}
+.note a{color:var(--primary)}
+
+.field-error{display:block;min-height:1.1em;color:#c62828;font-size:.85rem;margin-top:4px}
+.first72-list label{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.first72-list input{width:auto;min-width:18px;margin-top:3px}
+.map-status-ok{color:#2e7d32}
+.map-status-error{color:#c62828}
+
+.quick-paths .section{margin:18px 0 0}
+.compact-section{padding:18px}
+.quick-target.hidden-by-filter{display:none !important}
+.resource-card{transition:opacity .2s ease, transform .2s ease}

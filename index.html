@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bereaved Family Support Hub — v13</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+</head>
+<body>
+  <header>
+    
+  <div class="container quick-paths">
+    <div class="card section compact-section">
+      <h2>סינון מהיר לפי סוג השכול</h2>
+      <div class="actions-row">
+        <button class="btn btn-primary quick-filter-btn" data-quick="all">הכול</button>
+        <button class="btn btn-secondary quick-filter-btn" data-quick="military">צה״ל / כוחות הביטחון</button>
+        <button class="btn btn-secondary quick-filter-btn" data-quick="terror">איבה / טרור</button>
+        <button class="btn btn-secondary quick-filter-btn" data-quick="civil">אזרחי / פלילי / פתאומי</button>
+      </div>
+      <p class="muted" id="quickFilterStatus">מציג את כל התוכן.</p>
+    </div>
+  </div>
+
+  <div class="container">
+      <h1>מרכז הסיוע למשפחות שכולות בישראל</h1>
+      <p>מידע, זכויות, ארגוני סיוע וכלים מעשיים ורגשיים — במקום אחד.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="openBreatheTop">רגע של נשימה</button>
+        <a class="btn btn-secondary" href="#letters">מחולל מכתב</a>
+        <a class="btn btn-secondary" href="#benefitsTracker">מעקב זכויות</a>
+        <button class="btn btn-secondary" id="themeToggle">מצב לילה</button>
+        <button class="btn btn-secondary" id="printPlanBtn">הדפסה</button>
+        <button class="btn btn-secondary" id="downloadPdfBtn">הורדה כ‑PDF</button>
+        <button class="btn btn-secondary" id="pdfLetterBtn">הורדה כ‑PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container nav-wrap">
+      <a href="#letters">מכתב מוכן</a>
+      <a href="#benefitsTracker">מעקב זכויות</a>
+      <a href="#smartTimeline">תאריכים חשובים</a>
+      <a href="#first72">72 השעות הראשונות</a>
+      <a href="#mapSection">מפה</a>
+      <a href="#resourcesSection">ארגונים נוספים</a>
+      <a href="#firstMonth">החודש הראשון</a>
+      <a href="#breatheSection">לנשום</a>
+      <a href="#heritageSection">מורשת דיגיטלית</a>
+      <a href="#kidsCorner">ילדים ונוער</a>
+      <a href="#help">מוקדי חירום</a>
+    </div>
+  </nav>
+
+  <a class="floating-breathe" href="#breatheSection">לנשום</a>
+
+  <div class="breathe-modal hidden" id="breatheModal" aria-hidden="true">
+    <div class="breathe-card">
+      <div class="breathe-head">
+        <h3>רגע של נשימה</h3>
+        <button class="icon-btn" id="closeBreathe" aria-label="Close">✕</button>
+      </div>
+      <p class="muted">שאיפה 4 שניות → החזקה 4 → נשיפה 4 → החזקה 4</p>
+      <div class="breathe-wrap">
+        <div class="breathe-circle" id="breatheCircle"><span class="breathe-inner-text" id="breatheInnerText">נשימה</span></div>
+      </div>
+      <div class="breathe-status" id="breatheStatus">מוכנים להתחיל</div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="startBreathe">התחל/י</button>
+        <button class="btn btn-secondary" id="stopBreathe">עצור/י</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <section id="letters" class="card section quick-target" data-kind="all military terror civil">
+      <h2>מחולל מכתב פנייה לרשויות</h2>
+      <p class="muted">מלאו את הפרטים וקבלו מכתב מוכן להעתקה, הדפסה או שמירה כ‑PDF דרך הדפדפן.</p>
+      <div class="grid form-grid">
+        <label>שם מלא<input id="letterName" type="text" required></label>
+        <label>מספר תעודת זהות<input id="letterId" type="text" required></label>
+        <label>קרבה<select id="letterRelation">
+          <option>הורה</option><option>בן/בת זוג</option><option>אח/ות</option><option>ילד/ה</option><option>בן/בת משפחה</option>
+        </select></label>
+        <label>שם הנפטר/ת<input id="letterDeceased" type="text" required></label>
+        <label>תאריך האובדן<input id="letterDate" type="date" required max=""><small class="field-error" id="letterDateError"></small></label>
+        <label>יעד הפנייה<select id="letterTarget">
+          <option>ביטוח לאומי</option><option>משרד הביטחון</option><option>חברת ביטוח</option><option>ארגון סיוע</option>
+        </select></label>
+        <label>מה מבקשים<select id="letterNeed">
+          <option>מידע על זכויות וסיוע</option><option>סיוע רגשי</option><option>סיוע כלכלי</option><option>ליווי משפטי</option>
+        </select></label>
+        <label>טלפון<input id="letterPhone" type="text"></label>
+        <label>אימייל<input id="letterEmail" type="email"></label>
+      </div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="generateLetter">צור/י מכתב</button>
+        <button class="btn btn-secondary" id="copyLetter">העתקה</button>
+        <button class="btn btn-secondary" id="printLetter">הדפסה / PDF</button>
+      </div>
+      <div class="note">כלי עזר בלבד — יש לאמת כל פרט מול הגוף הרשמי.</div>
+      <textarea id="letterOutput" class="letter-output" placeholder="כאן יופיע המכתב המוכן"></textarea>
+          <pre id="printLetterBlock" class="print-letter-block" aria-hidden="true"></pre>
+    </section>
+
+    <section id="benefitsTracker" class="card section quick-target" data-kind="all military terror civil">
+      <h2>ציר זמן לזכויות שעלולות לפוג</h2>
+      <p class="muted">תזכורת כללית בלבד. חשוב לאמת כל מועד מול הגוף הרשמי.</p>
+      <div class="grid form-grid">
+        <label>מסלול<select id="trackerTrack">
+          <option>ביטוח לאומי</option>
+          <option>משרד הביטחון</option>
+        </select></label>
+        <label>תאריך האובדן / פתיחת התיק<input id="trackerStart" type="date" required max=""><small class="field-error" id="trackerStartError"></small></label>
+      </div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="buildTracker">בנה/י ציר זמן</button>
+        <button class="btn btn-secondary" id="clearTracker">נקה</button>
+      </div>
+      <div id="trackerOutput" class="timeline"></div>
+    </section>
+
+    <section id="smartTimeline" class="card section quick-target" data-kind="all military terror civil">
+      <h2>מחולל תאריכים אוטומטי</h2>
+      <p class="muted">מזינים תאריך אובדן ומקבלים תזכורות בסיסיות לשבעה, שלושים ושנה. זהו כלי עזר בלבד.</p>
+      <div class="grid form-grid">
+        <label>תאריך הפטירה / האובדן<input id="smartDeathDate" type="date" required max=""><small class="field-error" id="smartDeathDateError"></small></label>
+      </div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="buildSmartTimeline">חשב/י תאריכים</button>
+        <button class="btn btn-secondary" id="clearSmartTimeline">נקה</button>
+      </div>
+      <div id="smartTimelineOutput" class="timeline"></div>
+    </section>
+
+
+    <section id="smartTimeline" class="card section quick-target" data-kind="all military terror civil">
+      <h2>מחולל ציר זמן אוטומטי</h2>
+      <p class="muted">ברגע שמוזן תאריך פטירה, האתר יכול לחשב עבורכם תאריכים חשובים כמו סיום השבעה, השלושים ואזכרת השנה.</p>
+      <div class="grid form-grid">
+        <label>תאריך הפטירה / האובדן
+          <input id="smartDeathDate" type="date" required max="">
+          <small class="field-error" id="smartDeathDateError"></small>
+        </label>
+      </div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="buildSmartTimeline">חשב/י תאריכים</button>
+        <button class="btn btn-secondary" id="clearSmartTimeline">נקה</button>
+        <button class="btn btn-secondary" id="addMemorialCalendarBtn">הוסף אזכרת שנה ליומן</button>
+      </div>
+      <div id="smartTimelineOutput" class="timeline"></div>
+      <div class="note">זהו כלי עזר בלבד. לתאריכים הלכתיים או רשמיים יש לאמת מול הגורם המתאים.</div>
+    </section>
+
+    <section id="first72" class="card section quick-target" data-kind="all military terror civil">
+      <h2>צ'ק־ליסט ל־72 השעות הראשונות</h2>
+      <p class="muted">רשימת משימות קצרה לרגעים הראשונים, עם סימון שמירה מקומי בדפדפן.</p>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>הלוויה וקבורה</h3>
+          <ul class="guide-list first72-list">
+            <li><label><input type="checkbox" data-checklist="first72_1"> הוצאת רישיון קבורה</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_2"> בחירת חלקת קבר ותיאום הלוויה</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_3"> תיאום הסעה / הגעה למשפחה הקרובה</label></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>שבעה וארגון הבית</h3>
+          <ul class="guide-list first72-list">
+            <li><label><input type="checkbox" data-checklist="first72_4"> פרסום מודעת אבל / הודעה למשפחה</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_5"> ארגון כיסאות, ציוד ומצרכים לשבעה</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_6"> מינוי איש קשר משפחתי אחד</label></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>מסמכים וגורמים רשמיים</h3>
+          <ul class="guide-list first72-list">
+            <li><label><input type="checkbox" data-checklist="first72_7"> שמירת מסמכים, אישורים וצילומים</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_8"> בדיקת חשבונות בנק וחיובים דחופים</label></li>
+            <li><label><input type="checkbox" data-checklist="first72_9"> יצירת קשר עם הגורם הרשמי המלווה</label></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="mapSection" class="card section quick-target" data-kind="all military terror civil">
+      <h2>מפת עזרה קרובה</h2>
+      <p class="muted">מפת עזר ראשונית למרכזי חוסן, יד לבנים וסניפי ביטוח לאומי. כרגע המפה כוללת נקודות לדוגמה בלבד, ובמקביל הוספנו קישורים רשמיים לרשימות/אתרים עד להשלמת נתונים מדויקים.</p>
+      <div class="actions-row map-filters">
+        <button class="btn btn-secondary map-filter-btn" data-map-filter="all">הכול</button>
+        <button class="btn btn-secondary map-filter-btn" data-map-filter="מרכז חוסן">רק מרכזי חוסן</button>
+        <button class="btn btn-secondary map-filter-btn" data-map-filter="יד לבנים">רק יד לבנים</button>
+        <button class="btn btn-secondary map-filter-btn" data-map-filter="ביטוח לאומי">רק ביטוח לאומי</button>
+      </div>
+      <div class="actions-row"><button class="btn btn-primary" id="locateMeBtn">המיקום שלי</button><span id="mapStatus" class="note"></span></div>
+      <div id="helpMap" class="map-box"></div>
+      <div class="legend">
+        <span>📍 מרכזי חוסן</span>
+        <span>📍 יד לבנים</span>
+        <span>📍 ביטוח לאומי</span>
+      </div>
+      <div class="note">קישורים שימושיים: <a href="https://www.gov.il/he/Departments/DynamicCollectors/resilience-centers-list" target="_blank" rel="noopener">רשימת מרכזי חוסן</a> · <a href="https://yadlabanim.org/en/about-us/" target="_blank" rel="noopener">פרטי יד לבנים ופריסה ארצית</a></div>
+    </section>
+
+    <section id="resourcesSection" class="card section">
+      <h2>ארגונים ומשאבים נוספים שכדאי להכיר</h2>
+      <p class="muted">הוספנו כאן קישורים רשמיים ומשאבים שימושיים נוספים למשפחות שכולות, נפגעי איבה ונפגעי עבירה.</p>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>ארגון אלמנות ויתומי צה"ל</h3>
+          <p>הארגון היציג לאלמנות, אלמנים ויתומי כוחות הביטחון.</p>
+          <p><a href="https://www.idfwo.org/en/" target="_blank" rel="noopener">לאתר הרשמי</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>OneFamily</h3>
+          <p>סיוע מתמשך לנפגעי טרור ומשפחותיהם, כולל סיוע רגשי, כלכלי ומשפטי.</p>
+          <p><a href="https://onefamilytogether.org/he/ראשי/" target="_blank" rel="noopener">לאתר הרשמי</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>אחים לחיים</h3>
+          <p>ארגון המסייע ללוחמים פצועים; עשוי להיות רלוונטי גם למשפחות מסוימות סביב מעגלי שיקום ותמיכה.</p>
+          <p><a href="https://www.achimlachaim.org/" target="_blank" rel="noopener">לאתר הרשמי</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>יחידות הסיוע לנפגעי עבירה</h3>
+          <p>סיוע ומידע לנפגעי עבירה בממשק עם הפרקליטות וההליך הפלילי.</p>
+          <p><a href="https://www.gov.il/he/pages/contact-us" target="_blank" rel="noopener">פרטי קשר רשמיים</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>סיוע משפטי — משרד המשפטים</h3>
+          <p>בקשה לסיוע משפטי בנושאים אזרחיים, כולל מקרים שעשויים לגעת בירושה, עיזבון וזכויות.</p>
+          <p><a href="https://www.gov.il/he/service/legal_aid_application" target="_blank" rel="noopener">הגשת בקשה</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>אתר זכויות נפגעי עבירה</h3>
+          <p>פורטל ממשלתי לזכויות, מידע ותמיכה לנפגעי עבירה.</p>
+          <p><a href="https://www.gov.il/he/departments/rights-of-victims-of-crime/govil-landing-page" target="_blank" rel="noopener">לאתר הממשלתי</a></p>
+        </div>
+      </div>
+      <div class="note">הוספנו משאבים שאומתו מול אתרים רשמיים. שמות או יוזמות שלא הצלחנו לאמת בוודאות לא נוספו לקובץ זה.</div>
+    </section>
+
+    <section id="firstMonth" class="card section">
+      <h2>החודש הראשון — עוד דברים שכדאי לבדוק</h2>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>קצין/ת נפגעים או גורם מקשר</h3>
+          <p>במקרים צבאיים, לרוב יש גורם מקשר שמלווה את המשפחה בתחילת הדרך. כדאי לרכז דרכו שאלות, מסמכים ותיאומים.</p>
+        </div>
+        <div class="mini-card">
+          <h3>חשבונות בנק</h3>
+          <p>בדקו האם יש חשבונות משותפים, הוראות קבע, כרטיסים או גישות שעלולות להשתנות לאחר הפטירה, כדי למנוע עיכובים וחיובים מיותרים.</p>
+        </div>
+        <div class="mini-card">
+          <h3>מסמכים והעתקים</h3>
+          <p>שמרו העתקים דיגיטליים של תעודת פטירה, מסמכי זיהוי, אישורים רשמיים ופניות שביצעתם.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="breatheSection" class="card section">
+      <h2>כלי נשימה</h2>
+      <p class="muted">מעגל נשימה פשוט לרגעים של לחץ, הצפה או קושי להתרכז.</p>
+      <div class="breathe-wrap">
+        <div class="breathe-circle" id="breatheCircleInline"><span class="breathe-inner-text" id="breatheInnerTextInline">נשימה</span></div>
+      </div>
+      <div class="breathe-status" id="breatheStatusInline">מוכנים להתחיל</div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="startBreatheInline">התחל/י</button>
+        <button class="btn btn-secondary" id="stopBreatheInline">עצור/י</button>
+      </div>
+    </section>
+
+    <section id="memorialSection" class="card section">
+      <h2>נר זיכרון וירטואלי</h2>
+      <p class="muted">אפשר להדליק נר שיישאר פעיל בדפדפן ל‑24 שעות.</p>
+      <div class="candle-wrap">
+        <div class="candle" id="candle"></div>
+      </div>
+      <div id="candleStatus" class="breathe-status">הנר כבוי.</div>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="lightCandle">הדליקו נר</button>
+        <button class="btn btn-secondary" id="clearCandle">כיבוי</button>
+      </div>
+    </section>
+
+    <section id="heritageSection" class="card section">
+      <h2>מדריך מורשת דיגיטלית</h2>
+      <p class="muted">צ'ק‑ליסט קצר לטיפול בחשבונות דיגיטליים, רשתות חברתיות, טלפון ומנויים.</p>
+      <ul class="guide-list">
+        <li>Facebook: בדיקת אפשרות להנצחת החשבון או סגירתו.</li>
+        <li>Instagram: בדיקת אפשרות Memorialization או הסרה.</li>
+        <li>Gmail / Google: גיבוי מסמכים, תמונות ואנשי קשר חשובים.</li>
+        <li>iPhone / Android: בדיקת גישה למכשיר, גיבוי ותיעוד קודים ומסמכים.</li>
+        <li>Netflix / Spotify / שירותים דיגיטליים: ביטול מנויים או שינוי בעלות כשאפשר.</li>
+        <li>סלולר / אינטרנט: בדיקת חוזים פעילים ומניעת המשך חיוב.</li>
+      </ul>
+    </section>
+
+    <section id="officialResources" class="card section">
+      <h2>קישורים רשמיים ומשאבים נוספים</h2>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>ארגון נפגעי פעולות איבה</h3>
+          <p>ארגון יציג למשפחות נפגעי איבה, עם מידע על זכויות, הנצחה ותמיכה.</p>
+          <p><a href="https://www.irgun.org.il/" target="_blank" rel="noopener">לאתר הרשמי</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>קשר עד</h3>
+          <p>מוקד "קשר עד" של מערך הנפגעים בצה"ל: 1111 שלוחה 6.</p>
+          <p><a href="https://shikum.mod.gov.il/medical/mental-therapy" target="_blank" rel="noopener">למידע רשמי</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>סיוע משפטי — משרד המשפטים</h3>
+          <p>סיוע אפשרי בנושאים אזרחיים, כולל ירושה ועיזבון.</p>
+          <p><a href="https://www.gov.il/he/service/legal_aid_application" target="_blank" rel="noopener">הגשת בקשה</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>נפגעי עבירה</h3>
+          <p>יחידות סיוע ומידע רשמי לנפגעי עבירה ובני משפחה.</p>
+          <p><a href="https://www.gov.il/he/departments/rights-of-victims-of-crime/govil-landing-page" target="_blank" rel="noopener">לפורטל הרשמי</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kidsCorner" class="card section">
+      <h2>פינת ילדים ונוער</h2>
+      <p class="muted">הכוונה ראשונית להורים ולמשפחה על שיחה עם ילדים על אובדן.</p>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>איך לדבר</h3>
+          <ul class="guide-list">
+            <li>להשתמש בשפה פשוטה וברורה.</li>
+            <li>לספר את האמת בצורה מותאמת גיל.</li>
+            <li>לאפשר שאלות, שתיקה, ציור ומשחק.</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>סימנים שכדאי לשים לב אליהם</h3>
+          <ul class="guide-list">
+            <li>קושי מתמשך בשינה.</li>
+            <li>חרדה, היצמדות או התפרצויות חריגות.</li>
+            <li>נסיגה חברתית או ירידה חדה בתפקוד.</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>ספרים וקישורים</h3>
+          <ul class="guide-list">
+            <li>The Goodbye Book</li>
+            <li>ספרים מותאמי גיל על פרידה ואבל</li>
+            <li><a href="https://sunflowers.org.il" target="_blank" rel="noopener">עמותת חמניות</a></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>שכול אזרחי / פלילי</h3>
+          <ul class="guide-list">
+            <li><a href="https://path-to-life.org/" target="_blank" rel="noopener">בשביל החיים</a> — תמיכה לאחר מוות פתאומי, כולל התאבדות, תאונת דרכים או עבירת המתה.</li>
+            <li><a href="https://www.gov.il/he/pages/contact-us" target="_blank" rel="noopener">יחידות הסיוע לנפגעי עבירה</a> — פרטי קשר וסיוע בממשק עם ההליך הפלילי.</li>
+            <li><a href="https://www.gov.il/he/service/legal_aid_application" target="_blank" rel="noopener">סיוע משפטי</a> — בקשה לסיוע משפטי של משרד המשפטים.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="pathsResources" class="card section quick-target" data-kind="military terror civil">
+      <h2>משאבים לפי סוג השכול</h2>
+      <div class="kids-grid">
+        <div class="mini-card resource-card" data-kind="military">
+          <h3>צה״ל / כוחות הביטחון</h3>
+          <ul class="guide-list">
+            <li>אגף משפחות והנצחה</li>
+            <li>יד לבנים</li>
+            <li>קשר עד — 1111 שלוחה 6</li>
+            <li>ארגון אלמנות ויתומי צה״ל</li>
+          </ul>
+        </div>
+        <div class="mini-card resource-card" data-kind="terror">
+          <h3>נפגעי איבה / טרור</h3>
+          <ul class="guide-list">
+            <li>ביטוח לאומי — נפגעי פעולות איבה</li>
+            <li>ארגון נפגעי פעולות איבה</li>
+            <li>OneFamily</li>
+            <li>אתר "לעד" להנצחת חללי איבה</li>
+          </ul>
+        </div>
+        <div class="mini-card resource-card" data-kind="civil">
+          <h3>אזרחי / פלילי / פתאומי</h3>
+          <ul class="guide-list">
+            <li>בשביל החיים</li>
+            <li>יחידות סיוע לנפגעי עבירה</li>
+            <li>סיוע משפטי</li>
+            <li>ליווי בענייני עיזבון, חוזים וחשבונות</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+<section id="officialTools" class="card section quick-target" data-kind="military terror civil">
+      <h2>כלים וקישורים רשמיים נוספים</h2>
+      <div class="kids-grid">
+        <div class="mini-card">
+          <h3>אתר "לעד"</h3>
+          <p>אתר ההנצחה הרשמי של חללי פעולות האיבה, כולל נר נשמה וירטואלי ומידע שימושי למשפחות.</p>
+          <p><a href="https://laad.btl.gov.il/" target="_blank" rel="noopener">לאתר לעד</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>מחשבוני זכויות — נפגעי פעולות איבה</h3>
+          <p>ביטוח לאומי מציע מחשבוני זכויות, כולל תגמולים למשפחות חללי פעולות איבה.</p>
+          <p><a href="https://www.btl.gov.il/Simulators/peulotEiva/Pages/default.aspx" target="_blank" rel="noopener">למחשבונים הרשמיים</a></p>
+        </div>
+        <div class="mini-card">
+          <h3>קו ישיר לנפגעי איבה</h3>
+          <p>אפשר לפנות גם לקו 02-6269999 בנוסף למוקד הכללי.</p>
+        </div>
+        <div class="mini-card">
+          <h3>מוקד "קשר עד"</h3>
+          <p>ממקורות רשמיים עולה שמוקד "קשר עד" של מערך הנפגעים בצה"ל פועל דרך 1111 שלוחה 6.</p>
+          <p><a href="https://shikum.mod.gov.il/recognition/request/help" target="_blank" rel="noopener">למידע רשמי</a></p>
+        </div>
+      </div>
+    </section>
+
+        <section id="journalSection" class="card section quick-target" data-kind="all military terror civil">
+      <h2>פינת פריקה פרטית</h2>
+      <p class="muted">אפשר לכתוב כאן מחשבות, מכתב ליקיר/ה או כל מה שיושב על הלב. התוכן נשמר רק בדפדפן שלך.</p>
+      <textarea id="privateJournal" class="letter-output" placeholder="מותר לכתוב כאן בחופשיות..."></textarea>
+      <div class="actions-row">
+        <button class="btn btn-primary" id="saveJournalBtn">שמור/י</button>
+        <button class="btn btn-secondary" id="clearJournalBtn">נקה</button>
+      </div>
+      <div class="note" id="journalStatus"></div>
+    </section>
+
+    <section id="help" class="card section quick-target" data-kind="all military terror civil">
+      <h2>מוקדי חירום</h2>
+      <div class="phone-grid">
+        <div class="phone-card"><a href="tel:*8944"><strong>נפש אחת</strong><span>8944*</span><small>סיוע נפשי למשפחות</small></a><button class="save-contact-btn" data-name="נפש אחת" data-phone="*8944">שמור/י איש קשר</button></div>
+        <div class="phone-card"><a href="tel:*6050"><strong>ביטוח לאומי</strong><span>6050*</span><small>זכויות נפגעי איבה</small></a><button class="save-contact-btn" data-name="ביטוח לאומי" data-phone="*6050">שמור/י איש קשר</button></div>
+        <div class="phone-card"><a href="tel:1201"><strong>ער"ן</strong><span>1201</span><small>עזרה נפשית מיידית</small></a><button class="save-contact-btn" data-name="ער״ן" data-phone="1201">שמור/י איש קשר</button></div>
+        <div class="phone-card"><a href="tel:1800363363"><strong>נט"ל</strong><span>1-800-363-363</span><small>סיוע בטראומה</small></a><button class="save-contact-btn" data-name="נט״ל" data-phone="1800363363">שמור/י איש קשר</button></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
