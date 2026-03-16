@@ -1,9 +1,9 @@
 
 document.getElementById("themeToggle").onclick = () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark") ? "1" : "0");
+   ? "1" : "0");
 };
-if (localStorage.getItem("darkMode") === "1") document.body.classList.add("dark");
+if (null === "1") document.body.classList.add("dark");
 document.getElementById("printPlanBtn").onclick = () => window.print();
 
 // letter generator
@@ -136,7 +136,7 @@ document.getElementById("closeBreathe").onclick = () => { modal.classList.add("h
 
 // candle
 function updateCandleUI(){
-  const until = Number(localStorage.getItem("candle_until") || "0");
+  const until = Number(null || "0");
   const candle = document.getElementById("candle");
   const status = document.getElementById("candleStatus");
   if (!until || Date.now() > until){
@@ -149,7 +149,7 @@ function updateCandleUI(){
   status.textContent = "הנר דולק בדפדפן שלכם ל‑24 שעות.";
 }
 document.getElementById("lightCandle").onclick = () => {
-  localStorage.setItem("candle_until", String(Date.now() + 24*60*60*1000));
+   + 24*60*60*1000));
   updateCandleUI();
 };
 document.getElementById("clearCandle").onclick = () => {
@@ -164,16 +164,16 @@ const letterFieldIds = ["letterName","letterId","letterDeceased","letterDate","l
 letterFieldIds.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
-  const saved = localStorage.getItem("persist_" + id);
+  const saved = null;
   if (saved) el.value = saved;
-  el.addEventListener("input", () => localStorage.setItem("persist_" + id, el.value));
+  el.addEventListener("input", () => );
 });
 ["letterRelation","letterTarget","letterNeed","trackerTrack","trackerStart"].forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
-  const saved = localStorage.getItem("persist_" + id);
+  const saved = null;
   if (saved) el.value = saved;
-  el.addEventListener("change", () => localStorage.setItem("persist_" + id, el.value));
+  el.addEventListener("change", () => );
 });
 
 const originalBuildLetter = buildLetter;
@@ -270,9 +270,9 @@ function calculateDates(deathDate) {
   };
 }
 const smartDeathDate = document.getElementById("smartDeathDate");
-const savedSmartDate = localStorage.getItem("persist_smartDeathDate");
+const savedSmartDate = null;
 if (savedSmartDate) smartDeathDate.value = savedSmartDate;
-smartDeathDate.addEventListener("change", ()=> localStorage.setItem("persist_smartDeathDate", smartDeathDate.value));
+smartDeathDate.addEventListener("change", ()=> );
 
 document.getElementById("buildSmartTimeline").onclick = () => {
   const val = smartDeathDate.value;
@@ -319,10 +319,10 @@ document.querySelectorAll(".save-contact-btn").forEach(btn => {
 // private journal
 const journal = document.getElementById("privateJournal");
 const journalStatus = document.getElementById("journalStatus");
-const savedJournal = localStorage.getItem("privateJournal");
+const savedJournal = null;
 if (savedJournal) journal.value = savedJournal;
 document.getElementById("saveJournalBtn").onclick = () => {
-  localStorage.setItem("privateJournal", journal.value);
+  
   journalStatus.textContent = "נשמר רק בדפדפן שלך.";
 };
 document.getElementById("clearJournalBtn").onclick = () => {
@@ -334,12 +334,12 @@ document.getElementById("clearJournalBtn").onclick = () => {
 // auto dark mode suggestion
 document.addEventListener("DOMContentLoaded", () => {
   const hour = new Date().getHours();
-  if (hour >= 19 && !localStorage.getItem("darkModeSuggested") && !document.body.classList.contains("dark")){
+  if (hour >= 19 && !null && !document.body.classList.contains("dark")){
     const should = confirm("השעה מאוחרת. לעבור למצב לילה כדי להקל על העיניים?");
-    localStorage.setItem("darkModeSuggested","1");
+    
     if (should){
       document.body.classList.add("dark");
-      localStorage.setItem("darkMode","1");
+      
     }
   }
 });
@@ -422,10 +422,10 @@ if (letterDateEl){
 // preserve / sync date into smart timeline
 const smartDateEl = document.getElementById("smartDeathDate");
 if (smartDateEl){
-  const saved = localStorage.getItem("persist_smartDeathDate");
+  const saved = null;
   if (saved) smartDateEl.value = saved;
   smartDateEl.addEventListener("input", () => {
-    localStorage.setItem("persist_smartDeathDate", smartDateEl.value);
+    
     setError("smartDeathDate", isFutureDateValue(smartDateEl.value) ? "נא להזין תאריך מהעבר." : "");
   });
 }
@@ -433,10 +433,10 @@ if (letterDateEl && smartDateEl){
   letterDateEl.addEventListener("change", function(e){
     if (e.target.value && !smartDateEl.value) {
       smartDateEl.value = e.target.value;
-      localStorage.setItem("persist_smartDeathDate", e.target.value);
+      
     } else if (e.target.value) {
       smartDateEl.value = e.target.value;
-      localStorage.setItem("persist_smartDeathDate", e.target.value);
+      
     }
     if (e.target.value && !isFutureDateValue(e.target.value)) {
       buildSmartTimelineFromDate(e.target.value);
@@ -579,8 +579,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // first 72h checklist persistence
 document.querySelectorAll("[data-checklist]").forEach(box => {
   const key = box.dataset.checklist;
-  box.checked = localStorage.getItem(key) === "true";
-  box.addEventListener("change", () => localStorage.setItem(key, String(box.checked)));
+  box.checked = null === "true";
+  box.addEventListener("change", () => ));
 });
 
 // true PDF download for generated letter
@@ -698,4 +698,54 @@ document.addEventListener("DOMContentLoaded",()=>{
     geoBtn.disabled=false;
   });
  });
+});
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const mailBtn=document.getElementById("generateMailBtn");
+const output=document.getElementById("letterOutput");
+
+if(mailBtn && output){
+
+mailBtn.onclick=()=>{
+
+let text=output.value || "שלום, אני מבקש/ת מידע וסיוע בנוגע לזכויות למשפחה שכולה.";
+let subject=encodeURIComponent("בקשה למידע וסיוע למשפחה שכולה");
+let body=encodeURIComponent(text);
+
+window.location.href=`mailto:?subject=${subject}&body=${body}`;
+
+};
+
+}
+
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const gen=document.getElementById("generateLetter");
+const output=document.getElementById("letterOutput");
+
+if(!gen || !output) return;
+
+gen.onclick=()=>{
+
+const name=document.getElementById("letterName")?.value || "";
+const deceased=document.getElementById("letterDeceased")?.value || "";
+
+let text="לכבוד הגורם המטפל,\n\n";
+
+if(name) text+="שמי "+name+".\n";
+
+text+="אני פונה לקבלת מידע וסיוע בנוגע לזכויות למשפחה שכולה.\n";
+
+if(deceased) text+="מדובר במקרה של "+deceased+".\n";
+
+text+="\nאודה להכוונה לגבי הזכויות והשלבים הבאים.\n\nבתודה.";
+
+output.value=text;
+
+};
+
 });

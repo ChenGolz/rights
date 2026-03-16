@@ -32,7 +32,12 @@
       <p>מידע, זכויות, ארגוני סיוע וכלים מעשיים ורגשיים — במקום אחד.</p>
       <div class="hero-actions">
         <button class="btn btn-primary" id="openBreatheTop">רגע של נשימה</button>
-        <a class="btn btn-secondary" href="#letters">מחולל מכתב</a>
+        <a class="btn btn-secondary" href="#letters">מחולל מכתב
+<p style="opacity:0.8">
+אפשר ליצור מכתב גם בלי למלא פרטים — המערכת תייצר נוסח כללי שאפשר לשלוח במייל.
+הפרטים שאתם מזינים אינם נשמרים באתר.
+</p>
+</a>
         <a class="btn btn-secondary" href="#benefitsTracker">מעקב זכויות</a>
         <button class="btn btn-secondary" id="themeToggle">מצב לילה</button>
         <button class="btn btn-secondary" id="printPlanBtn">הדפסה</button>
@@ -80,16 +85,21 @@
 
   <div class="container">
     <section id="letters" class="card section quick-target" data-kind="all military terror civil">
-      <h2>מחולל מכתב פנייה לרשויות</h2>
+      <h2>מחולל מכתב
+<p style="opacity:0.8">
+אפשר ליצור מכתב גם בלי למלא פרטים — המערכת תייצר נוסח כללי שאפשר לשלוח במייל.
+הפרטים שאתם מזינים אינם נשמרים באתר.
+</p>
+ פנייה לרשויות</h2>
       <p class="muted">מלאו את הפרטים וקבלו מכתב מוכן להעתקה, הדפסה או שמירה כ‑PDF דרך הדפדפן.</p>
       <div class="grid form-grid">
-        <label>שם מלא<input id="letterName" type="text" required></label>
-        <label>מספר תעודת זהות<input id="letterId" type="text" required></label>
+        <label>שם מלא<input id="letterName" type="text" ></label>
+        <label>מספר תעודת זהות<input id="letterId" type="text" ></label>
         <label>קרבה<select id="letterRelation">
           <option>הורה</option><option>בן/בת זוג</option><option>אח/ות</option><option>ילד/ה</option><option>בן/בת משפחה</option>
         </select></label>
-        <label>שם הנפטר/ת<input id="letterDeceased" type="text" required></label>
-        <label>תאריך האובדן<input id="letterDate" type="date" required max=""><small class="field-error" id="letterDateError"></small></label>
+        <label>שם הנפטר/ת<input id="letterDeceased" type="text" ></label>
+        <label>תאריך האובדן<input id="letterDate" type="date"  max=""><small class="field-error" id="letterDateError"></small></label>
         <label>יעד הפנייה<select id="letterTarget">
           <option>ביטוח לאומי</option><option>משרד הביטחון</option><option>חברת ביטוח</option><option>ארגון סיוע</option>
         </select></label>
@@ -100,10 +110,14 @@
         <label>אימייל<input id="letterEmail" type="email"></label>
       </div>
       <div class="actions-row">
-        <button class="btn btn-primary" id="generateLetter">צור/י מכתב</button>
-        <button class="btn btn-secondary" id="copyLetter">העתקה</button>
-        <button class="btn btn-secondary" id="printLetter">הדפסה / PDF</button>
-      </div>
+        
+<div class="actions-row" style="margin-top:10px">
+<button class="btn btn-primary" id="generateLetter">צור מכתב</button>
+<button class="btn btn-secondary" id="copyLetter">העתק טקסט</button>
+<button class="btn btn-secondary" id="downloadPdfBtn">הורד PDF</button>
+<button class="btn btn-secondary" id="generateMailBtn">צור אימייל</button>
+</div>
+
       <div class="note">כלי עזר בלבד — יש לאמת כל פרט מול הגוף הרשמי.</div>
       <textarea id="letterOutput" class="letter-output" placeholder="כאן יופיע המכתב המוכן"></textarea>
           <pre id="printLetterBlock" class="print-letter-block" aria-hidden="true"></pre>
@@ -117,7 +131,7 @@
           <option>ביטוח לאומי</option>
           <option>משרד הביטחון</option>
         </select></label>
-        <label>תאריך האובדן / פתיחת התיק<input id="trackerStart" type="date" required max=""><small class="field-error" id="trackerStartError"></small></label>
+        <label>תאריך האובדן / פתיחת התיק<input id="trackerStart" type="date"  max=""><small class="field-error" id="trackerStartError"></small></label>
       </div>
       <div class="actions-row">
         <button class="btn btn-primary" id="buildTracker">בנה/י ציר זמן</button>
@@ -130,7 +144,7 @@
       <h2>מחולל תאריכים אוטומטי</h2>
       <p class="muted">מזינים תאריך אובדן ומקבלים תזכורות בסיסיות לשבעה, שלושים ושנה. זהו כלי עזר בלבד.</p>
       <div class="grid form-grid">
-        <label>תאריך הפטירה / האובדן<input id="smartDeathDate" type="date" required max=""><small class="field-error" id="smartDeathDateError"></small></label>
+        <label>תאריך הפטירה / האובדן<input id="smartDeathDate" type="date"  max=""><small class="field-error" id="smartDeathDateError"></small></label>
       </div>
       <div class="actions-row">
         <button class="btn btn-primary" id="buildSmartTimeline">חשב/י תאריכים</button>
@@ -145,7 +159,7 @@
       <p class="muted">ברגע שמוזן תאריך פטירה, האתר יכול לחשב עבורכם תאריכים חשובים כמו סיום השבעה, השלושים ואזכרת השנה.</p>
       <div class="grid form-grid">
         <label>תאריך הפטירה / האובדן
-          <input id="smartDeathDate" type="date" required max="">
+          <input id="smartDeathDate" type="date"  max="">
           <small class="field-error" id="smartDeathDateError"></small>
         </label>
       </div>
