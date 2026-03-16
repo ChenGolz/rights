@@ -559,7 +559,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (window.map) {
           map.setView([userLat, userLng], 10);
           if (window._userMarker) map.removeLayer(window._userMarker);
-          window._userMarker = L.marker([userLat, userLng]).addTo(map).bindPopup("המיקום שלי");
+          window._userMarker = L.marker([userLat, userLng]).addTo(map).bindPopup("מצא מרכז קרוב אליי");
         }
         const nearest = mapPoints
           .map(p => ({...p, distance: haversineKm(userLat, userLng, p.lat, p.lng)}))
@@ -654,7 +654,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     geoBtn.disabled = true;
 
     navigator.geolocation.getCurrentPosition((pos)=>{
-      geoBtn.textContent = "המיקום שלי";
+      geoBtn.textContent = "מצא מרכז קרוב אליי";
       geoBtn.disabled = false;
     },()=>{
       geoBtn.textContent = "שגיאה באיתור מיקום";
@@ -671,4 +671,31 @@ document.addEventListener("DOMContentLoaded",()=>{
    const text=encodeURIComponent("מצאתי אתר שעוזר למשפחות שכולות להתמודד עם הבירוקרטיה: "+url);
    window.open("https://wa.me/?text="+text,"_blank");
  };
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+const fb=document.getElementById("floatingBreathe");
+if(!fb) return;
+fb.onclick=()=>{
+ const el=document.getElementById("breatheSection")||document.getElementById("breathe");
+ if(el) el.scrollIntoView({behavior:"smooth"});
+};
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+ const geoBtn=document.getElementById("locateMeBtn");
+ if(!geoBtn) return;
+
+ geoBtn.addEventListener("click",()=>{
+  geoBtn.textContent="מאתר מיקום... ⏳";
+  geoBtn.disabled=true;
+
+  navigator.geolocation.getCurrentPosition(()=>{
+    geoBtn.textContent="מצא מרכז קרוב אליי";
+    geoBtn.disabled=false;
+  },()=>{
+    geoBtn.textContent="שגיאה באיתור מיקום";
+    geoBtn.disabled=false;
+  });
+ });
 });
